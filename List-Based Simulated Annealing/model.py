@@ -10,8 +10,7 @@ class City (object):
         return f'name: {self.name}, coordinate: {self.x},{self.y}'
 
 class TestCase (object):
-    def __init__(self, cities: List[City], optimal: float):
+    def __init__(self, cities: List[City]):
         self.cities = cities
-        self.optimal = optimal
 
 Solution = List[int]
