@@ -2,7 +2,7 @@
 import random
 import math
 from collections import deque
-from TSP import get_cost
+from TS.TSP import get_cost
 
 def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, best_cost):
     """

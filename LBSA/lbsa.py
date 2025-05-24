@@ -5,8 +5,12 @@ import time
 
 from typing import List, Callable, Tuple
 
-from model import *
-from config import *
+from LBSA.model import *
+from LBSA.config import *
+
+inverse_count = 0
+insert_count = 0
+swap_count = 0
 
 
 def evaluate_distance(a: City, b: City) -> float:
@@ -93,6 +97,8 @@ def swap_solution(old_solution: Solution, i: int, j: int) -> Solution:
 
 
 def create_new_solution(cities: List[City], old_solution: Solution, i_test: int = -1, j_test: int = -1) -> Solution:
+    global insert_count, inverse_count, swap_count
+
     # helper for unit test, so number is not random
     i, j = i_test, j_test
 
@@ -108,10 +114,13 @@ def create_new_solution(cities: List[City], old_solution: Solution, i_test: int 
     index = evaluation.index(min(evaluation))
 
     if index == 0:
+        inverse_count += 1
         return inverse_opt
     elif index == 1:
+        insert_count += 1
         return insert_opt
     else:
+        swap_count += 1
         return swap_opt
 
 
@@ -249,6 +258,11 @@ if __name__ == '__main__':
         print(f'Best cost over {num_runs} runs: {best_distance}')
         print(f'Best route corresponding to best cost: {best_solution_overall}')
         print(f'Average time over {num_runs} runs: {avg_time:.2f} seconds')
+
+        print(f"Number of times inverse_opt was used: {inverse_count}")
+        print(f"Number of times insert_opt was used: {insert_count}")
+        print(f"Number of times swap_opt was used: {swap_count}")
+        print(f"Total transformations used: {inverse_count + insert_count + swap_count}")
 
         if SHOW_VISUAL:
             import matplotlib.pyplot as plt
