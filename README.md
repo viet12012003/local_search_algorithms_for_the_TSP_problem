@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ```
 
 ## Chi tiết thuật toán
-Chi tiết thuật toán có trong file: Link drive
+Chi tiết thuật toán có trong file: https://drive.google.com/file/d/1GhR4sb4q0lw6zA3-RynH_pJaVO1qnMay/view?usp=drive_link
 
 ---
 

@@ -57,6 +57,7 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
         fq_dict[(v_1, v_2)] = fq_dict.get((v_1, v_2), 0) + 1  # Cập nhật tần suất xuất hiện của cặp (v_1, v_2)
         new_sol = get_new_sol(sol, best_i_1, best_j_1)  # Tạo lời giải mới từ việc hoán đổi cặp (best_i_1, best_j_1)
         new_cost = cost + best_delta_1  # Tính chi phí mới
+
     else:  # Nếu không phá luật Tabu
         if tb_size > 0:
             v_1, v_2 = (sol[best_i_0], sol[best_j_0]) if sol[best_i_0] < sol[best_j_0] else (
