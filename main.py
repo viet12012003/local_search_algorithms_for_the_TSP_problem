@@ -6,11 +6,12 @@ from tqdm import tqdm
 from TS.TSP import *
 from TS import TabuSearch
 from LBSA import lbsa, model
+from GLS import gls
 
 
 # method = "TS"
-method = "LBSA"
-# method = "GLS"
+# method = "LBSA"
+method = "GLS"
 
 
 # load data
@@ -123,6 +124,40 @@ for dataset_id, pos in enumerate(datasets):
         print(f"Avg Cost: {np.mean(distances):.2f} ± {np.std(distances):.2f}")
         print(f"Avg Time: {np.mean(times):.2f}s ± {np.std(times):.2f}s")
 
+    elif method == 'GLS':
+        alpha = 0.1
+        costs = []
+        times = []
+
+        print(f"  ➤ GLS on dataset #{dataset_id + 1}")
+
+        coords = np.array(pos)  # 'pos' là danh sách tọa độ thành phố
+        Xdata = gls.build_distance_matrix(coords)
+
+        for _ in tqdm(range(num_tests), desc=f"  ➤ GLS on dataset #{dataset_id + 1}"):
+            start = time.time()
+            best_cost_run, avg_cost_run, _, best_tour = gls.run_multiple_gls(
+                Xdata,
+                iterations= 1,
+                alpha=alpha,
+                seed_func= gls.nearest_neighbor_seed,
+                max_attempts=100
+            )
+            end = time.time()
+
+            costs.append(best_cost_run)
+            times.append(end - start)
+
+            if best_cost_run < best_cost:
+                best_cost = best_cost_run
+                best_route = [i - 1 for i in best_tour[0]]
+                best_result_list = [best_cost_run]
+
+        print(f"Best Cost: {best_cost}")
+        print(f"Avg Cost: {np.mean(costs):.2f} ± {np.std(costs):.2f}")
+        print(f"Avg Time: {np.mean(times):.2f}s ± {np.std(times):.2f}s")
+
+
     # --- Hiển thị đồ thị ---
     if SHOW_VISUAL:
         test = SimpleNamespace()
@@ -140,12 +175,12 @@ for dataset_id, pos in enumerate(datasets):
         plt.plot(x, y, '--b', linewidth = 1)
         plt.title(f"Best Route = {best_cost:.1f}")
         plt.show()
-
-        # Vẽ quá trình tìm kiếm
-        if best_result_list:
-            plt.plot(range(len(best_result_list)), best_result_list, 'b-')
-            plt.title("Evaluation per Iteration")
-            plt.xlabel("Iteration")
-            plt.ylabel("Cost")
-            plt.grid(True)
-            plt.show()
+        if method == 'TS' or method == "LBSA":
+            # Vẽ quá trình tìm kiếm
+            if best_result_list:
+                plt.plot(range(len(best_result_list)), best_result_list, 'b-')
+                plt.title("Evaluation per Iteration")
+                plt.xlabel("Iteration")
+                plt.ylabel("Cost")
+                plt.grid(True)
+                plt.show()

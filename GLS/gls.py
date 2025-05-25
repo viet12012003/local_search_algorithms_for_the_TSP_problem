@@ -317,7 +317,7 @@ def update_penalty(penalty, city_tour, utilities):
 # Function: Guided Search
 def guided_search(Xdata, city_tour, alpha=0.1, local_search_optima=1000, max_attempts=50):
     """
-    Thực hiện Guided Local Search (GLS)
+    Thực hiện GLS (GLS)
     
     Tham số:
     -----------
@@ -433,7 +433,7 @@ def run_multiple_gls(Xdata, iterations=30, alpha=0.1, seed_func=nearest_neighbor
 
 # ================================= MAIN ===================================
 def main():
-    file_path = "Data/data.txt"
+    file_path = "D:\ADA\local_search_algorithms_for_the_TSP_problem\data.txt"
     bks_values = [426, 538, 21282, 6528, 29368, 49135, 42029, 15281, 107217, 6773]
     alpha = 0.1
     results = []
