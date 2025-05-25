@@ -98,7 +98,7 @@ Mở file main.py, chỉnh sửa biến method theo thuật toán mong muốn:
 ``` bash
 # Lựa chọn thuật toán:
 method = "TS"     # Tabu Search
-# method = "LBSA"   # LBSA (List-Based Simulated Annealing)
+# method = "LBSA"   # List-Based Simulated Annealing
 # method = "GLS"    # Guided Local Search
 ```
 
