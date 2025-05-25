@@ -14,7 +14,8 @@ Mục tiêu là tìm lời giải gần tối ưu trong thời gian hợp lý tr
 - [Cài đặt](#cài-đặt)
 - [Chi tiết thuật toán](#chi-tiết-thuật-toán)
 - [Bộ dữ liệu](#bộ-dữ-liệu)
-- [Hướng dẫn sử dụng](#sử-dụng)
+- [Cấu trúc thư mục dự án](#cấu-trúc-thư-mục-dự-án)
+- [Hướng dẫn sử dụng](#hướng-dẫn-sử-dụng)
 - [Liên hệ](#liên-hệ)
 ---
 
@@ -30,12 +31,12 @@ git clone https://github.com/viet12012003/local_search_algorithms_for_the_TSP_pr
 pip install -r requirements.txt
 ```
 
-## Chi tiết thuật toán:
+## Chi tiết thuật toán
 Chi tiết thuật toán có trong file: Link drive
 
 ---
 
-## Bộ dữ liệu:
+## Bộ dữ liệu
 
 Để đánh giá hiệu quả thuật toán, dự án đã sử dụng 10 bộ dữ liệu chuẩn từ TSPLIB (nguồn: [TSPLIB GitHub](https://github.com/mastqe/tsplib)). Đây là các bài toán TSP đối xứng với đầu vào là tọa độ các thành phố.
 
@@ -89,12 +90,12 @@ Dữ liệu đã được xử lý lưu tại file data.txt
 ## Hướng dẫn sử dụng
 
 Chạy chương trình
-File main.py là điểm khởi đầu để thực thi thuật toán giải bài toán Người giao hàng (TSP) bằng một trong ba phương pháp: Tabu Search (TS), LBSA, hoặc Guided Local Search (GLS).
+File main.py là điểm khởi đầu để thực thi thuật toán giải bài toán Người giao hàng (TSP) bằng một trong ba thuật toán: TS, LBSA, hoặc GLS.
 
 Cách chọn thuật toán
 Mở file main.py, chỉnh sửa biến method theo thuật toán mong muốn:
 
-```
+``` bash
 # Lựa chọn thuật toán:
 method = "TS"     # Tabu Search
 # method = "LBSA"   # LBSA (Late Acceptance Hill Climbing)
@@ -102,7 +103,7 @@ method = "TS"     # Tabu Search
 ```
 
 Cần thay đổi đường dẫn file ở dòng sau để chạy chương trình:
-```
+``` bash
 with open('your_path\local_search_algorithms_for_the_TSP_problem\\test.txt', 'r') as f:
 ```
 
