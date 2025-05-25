@@ -1,4 +1,4 @@
-# Thuật toán Tìm kiếm cục bộ cho Bài toán Người du lịch (TSP)
+# Thuật toán Tìm kiếm cục bộ cho Bài toán Người bán hàng du lịch (TSP)
 
 Dự án triển khai ba thuật toán tìm kiếm cục bộ hiệu quả để giải quyết bài toán TSP (Travelling Salesman Problem), bao gồm:
 
