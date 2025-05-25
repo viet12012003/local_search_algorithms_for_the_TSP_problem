@@ -104,7 +104,7 @@ method = "TS"     # Tabu Search
 
 Cần thay đổi đường dẫn file ở dòng sau để chạy chương trình:
 ``` bash
-with open('your_path\local_search_algorithms_for_the_TSP_problem\\test.txt', 'r') as f:
+with open('your_path\local_search_algorithms_for_the_TSP_problem\\data.txt', 'r') as f:
 ```
 
 **Tham số quan trọng**
