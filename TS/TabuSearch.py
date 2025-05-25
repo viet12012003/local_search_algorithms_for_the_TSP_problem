@@ -4,6 +4,7 @@ import math
 from collections import deque
 from TS.TSP import get_cost
 
+
 def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, best_cost):
     """
     :param n: số lượng đỉnh
@@ -18,7 +19,7 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
     """
 
     get_new_sol = mut_md[0]  # Hàm tạo lời giải mới
-    get_delta = mut_md[1]    # Hàm tính toán sự thay đổi chi phí (delta) khi thực hiện một move
+    get_delta = mut_md[1]  # Hàm tính toán sự thay đổi chi phí (delta) khi thực hiện một move
 
     cost = get_cost(n, adj_mat, sol)  # Tính chi phí hiện tại của lời giải
 
@@ -32,7 +33,8 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
     for _ in range(max_tnm):
         i, j = random.sample(range(n), 2)  # Chọn ngẫu nhiên hai chỉ số đỉnh
         i, j = (i, j) if i < j else (j, i)  # Đảm bảo i < j để tránh lặp lại (i, j) và (j, i)
-        v_1, v_2 = (sol[i], sol[j]) if sol[i] < sol[j] else (sol[j], sol[i])  # Sắp xếp để tiện cho tra cứu trong danh sách Tabu
+        v_1, v_2 = (sol[i], sol[j]) if sol[i] < sol[j] else (
+        sol[j], sol[i])  # Sắp xếp để tiện cho tra cứu trong danh sách Tabu
         delta = get_delta(n, adj_mat, sol, i, j)  # Tính toán delta (thay đổi chi phí) khi hoán đổi cặp (i, j)
 
         # Nếu cặp (v_1, v_2) chưa bị cấm trong danh sách Tabu
@@ -57,7 +59,8 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
         new_cost = cost + best_delta_1  # Tính chi phí mới
     else:  # Nếu không phá luật Tabu
         if tb_size > 0:
-            v_1, v_2 = (sol[best_i_0], sol[best_j_0]) if sol[best_i_0] < sol[best_j_0] else (sol[best_j_0], sol[best_i_0])
+            v_1, v_2 = (sol[best_i_0], sol[best_j_0]) if sol[best_i_0] < sol[best_j_0] else (
+            sol[best_j_0], sol[best_i_0])
             if len(tb_list) == tb_size:  # Nếu danh sách Tabu đầy, xóa phần tử đầu
                 tb_list.popleft()
             tb_list.append((v_1, v_2))  # Thêm cặp (v_1, v_2) vào cuối danh sách Tabu
@@ -67,6 +70,8 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
 
     # Trả về lời giải mới, chi phí mới, danh sách Tabu và từ điển tần suất
     return new_sol, new_cost, tb_list, fq_dict
+
+
 # Từ điển tuần suất chưa xài đâu, nào update thì mới xài
 
 def nearest_neighbor_solution(n, adj_mat, start=None):
@@ -92,6 +97,7 @@ def nearest_neighbor_solution(n, adj_mat, start=None):
         current = next_city
 
     return tour
+
 
 def tb(n, adj_mat, tb_size, max_tnm, mut_md, term_count):
     """

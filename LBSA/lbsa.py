@@ -200,7 +200,8 @@ def run_lbsa(cities: List[City], M: int, K: int, temperature_list_length: int, i
                     best_evaluation = current_evaluation
 
             else:
-                p = calculate_bad_result_acceptance_probability(max(temperature_list), new_evaluation, current_evaluation)
+                p = calculate_bad_result_acceptance_probability(max(temperature_list), new_evaluation,
+                                                                current_evaluation)
                 r = generate_random_probability_r()
 
                 if r > p:

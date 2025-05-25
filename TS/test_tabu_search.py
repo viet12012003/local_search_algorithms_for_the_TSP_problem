@@ -9,7 +9,7 @@ import TabuSearch
 # load data
 # Đọc nhiều bộ dữ liệu từ file
 datasets = []
-with open('D:\ADA\local_search_algorithms_for_the_TSP_problem\Tabu Search\\data.txt', 'r') as f:
+with open('D:\ADA\local_search_algorithms_for_the_TSP_problem\data.txt', 'r') as f:
     lines = [line.strip() for line in f if line.strip() != '']
 
 index = 0
@@ -29,7 +29,7 @@ for _ in range(num_datasets):
 # set mutation method
 
 # mut_md = [get_new_sol_swap, get_delta_swap]   # Chay kha lau, ket qua khong tot bang 2-opt
-mut_md = [get_new_sol_2opt, get_delta_2opt]   # Chay nhanh, ket qua on ap
+mut_md = [get_new_sol_2opt, get_delta_2opt]  # Chay nhanh, ket qua on ap
 # mut_md = [get_new_sol_vertex_ex, get_delta_vertex_ex]
 # mut_md = [get_new_sol_vertex_ins, get_delta_vertex_ins]
 # mut_md = [get_new_sol_4opt, get_delta_4opt]
@@ -115,12 +115,13 @@ for dataset_id, pos in enumerate(datasets):
         y_points = [test.cities[i].y for i in route]
 
         plt.plot(x_points, y_points, linestyle='--', color='b')
-        plt.title(f"Best Cost = 21569.3") # Chỉnh tiêu đề ở đây!
+        plt.title(f"Best Cost = 21569.3")  # Chỉnh tiêu đề ở đây!
         plt.show()
 
         # Vẽ đồ thị đánh giá qua vòng lặp
         if isinstance(best_result_data, dict) and 'result_list' in best_result_data:
-            plt.plot(range(len(best_result_data['result_list'])), best_result_data['result_list'], linestyle='-', color='b')
+            plt.plot(range(len(best_result_data['result_list'])), best_result_data['result_list'], linestyle='-',
+                     color='b')
             plt.title("Evaluation per Iteration")
             plt.xlabel("Iteration")
             plt.ylabel("Cost")

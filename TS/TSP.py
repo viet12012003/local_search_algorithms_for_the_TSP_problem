@@ -1,4 +1,6 @@
 import random
+
+
 def get_cost(n, adj_mat, sol):
     """
     dùng để tính tổng chi phí của một vòng đi qua tất cả các thành phố một lần trong bài toán TSP
@@ -7,6 +9,7 @@ def get_cost(n, adj_mat, sol):
     :param sol: Lời giải, là một hoán vị của các chỉ số thành phố, e.g. [1,0]
     """
     return sum([adj_mat[sol[_]][sol[(_ + 1) % n]] for _ in range(n)])
+
 
 def get_delta_swap(n, adj_mat, sol, i, j):
     # bef: [..., i-1, i, i+1, ..., j-1, j, j+1] / [...,i-1, i, j, j+1, ...]
@@ -37,10 +40,12 @@ def get_delta_2opt(n, adj_mat, sol, i, j):
         delta = 0
     return delta
 
+
 def get_new_sol_2opt(sol, i, j):
     new_sol = sol.copy()
-    new_sol[i:j+1] = new_sol[i:j+1][::-1]  # notice index + 1 !
+    new_sol[i:j + 1] = new_sol[i:j + 1][::-1]  # notice index + 1 !
     return new_sol
+
 
 def get_new_sol_vertex_ins(sol, i, j):
     """
@@ -55,6 +60,7 @@ def get_new_sol_vertex_ins(sol, i, j):
         j -= 1  # sau khi pop thì vị trí chèn phải lùi lại 1
     new_sol.insert(j, city)
     return new_sol
+
 
 def get_delta_vertex_ins(n, adj_mat, sol, i, j):
     """
@@ -85,14 +91,15 @@ def get_new_sol_or_opt(sol, i, j):
     if j - i + 1 > 3:
         return sol.copy()  # chỉ cho phép đoạn dài <= 3
 
-    segment = sol[i:j+1]
-    remain = sol[:i] + sol[j+1:]
+    segment = sol[i:j + 1]
+    remain = sol[:i] + sol[j + 1:]
 
     # Chọn vị trí chèn mới
     insert_pos = random.randint(0, len(remain))
     new_sol = remain[:insert_pos] + segment + remain[insert_pos:]
 
     return new_sol
+
 
 def get_delta_or_opt(n, adj_mat, sol, i, j):
     """
@@ -102,8 +109,8 @@ def get_delta_or_opt(n, adj_mat, sol, i, j):
     if j - i + 1 > 3:
         return 0
 
-    segment = sol[i:j+1]
-    remain = sol[:i] + sol[j+1:]
+    segment = sol[i:j + 1]
+    remain = sol[:i] + sol[j + 1:]
 
     insert_pos = random.randint(0, len(remain))
     # Lấy các đỉnh ảnh hưởng tới chi phí

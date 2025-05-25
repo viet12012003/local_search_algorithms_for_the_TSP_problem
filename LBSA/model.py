@@ -1,6 +1,7 @@
 from typing import List, Callable
 
-class City (object):
+
+class City(object):
     def __init__(self, name: str, x: float, y: float):
         self.name = name
         self.x = x
@@ -9,8 +10,10 @@ class City (object):
     def __repr__(self):
         return f'name: {self.name}, coordinate: {self.x},{self.y}'
 
-class TestCase (object):
+
+class TestCase(object):
     def __init__(self, cities: List[City]):
         self.cities = cities
+
 
 Solution = List[int]

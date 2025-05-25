@@ -6,8 +6,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
 def preprocess_data(file_path):
-    with open (file_path, 'r') as f:
+    with open(file_path, 'r') as f:
         lines = f.readlines()
     idx = 0
     num_datasets = int(lines[idx].strip())
@@ -23,6 +24,7 @@ def preprocess_data(file_path):
             idx += 1
         datasets.append(np.array(coords))
     return datasets
+
 
 def distance_calc(Xdata, city_tour):
     """
@@ -46,11 +48,12 @@ def distance_calc(Xdata, city_tour):
     """
     distance = 0
     # Duyệt qua từng cặp thành phố liên tiếp trong hành trình
-    for k in range(0, len(city_tour[0])-1):
+    for k in range(0, len(city_tour[0]) - 1):
         m = k + 1
         # Cộng dồn khoảng cách giữa thành phố thứ k và k+1, trừ 1 vì Python đánh index từ 0
-        distance = distance + Xdata[city_tour[0][k]-1, city_tour[0][m]-1]
+        distance = distance + Xdata[city_tour[0][k] - 1, city_tour[0][m] - 1]
     return distance
+
 
 def nearest_neighbor_seed(Xdata):
     """
@@ -74,21 +77,21 @@ def nearest_neighbor_seed(Xdata):
     """
     n = Xdata.shape[0]  # Số lượng thành phố
     # Danh sách các thành phố chưa thăm (đánh số từ 1 đến n)
-    unvisited = list(range(1, n+1))  
+    unvisited = list(range(1, n + 1))
     # Bắt đầu từ thành phố 1, đồng thời loại khỏi danh sách chưa thăm
-    tour = [unvisited.pop(0)]  
+    tour = [unvisited.pop(0)]
 
     # Lặp cho đến khi thăm hết các thành phố
     while unvisited:
         last = tour[-1]  # Thành phố hiện tại
         # Tìm thành phố chưa thăm gần nhất
         # key=lambda city: Xdata[last-1, city-1]: sắp xếp theo khoảng cách đến thành phố hiện tại
-        next_city = min(unvisited, key=lambda city: Xdata[last-1, city-1])
+        next_city = min(unvisited, key=lambda city: Xdata[last - 1, city - 1])
         tour.append(next_city)  # Thêm vào hành trình
         unvisited.remove(next_city)  # Đánh dấu đã thăm
 
     # Thêm thành phố xuất phát vào cuối để tạo thành chu trình kín
-    tour.append(tour[0])  
+    tour.append(tour[0])
     # Tính tổng khoảng cách của hành trình
     cost = distance_calc(Xdata, [tour, 0])
     return [tour, cost]
@@ -113,36 +116,36 @@ def build_distance_matrix(coordinates):
     """
     # Lấy số lượng thành phố
     n = coordinates.shape[0]
-    
+
     # Khởi tạo ma trận khoảng cách với giá trị 0
     dist_matrix = np.zeros((n, n))
-    
+
     # Lặp qua tất cả các cặp thành phố
     for i in range(n):
         for j in range(n):
             # Tính khoảng cách Euclid giữa thành phố i và j
             # np.linalg.norm tính căn bậc 2 của tổng bình phương hiệu tọa độ
             dist_matrix[i, j] = np.linalg.norm(coordinates[i] - coordinates[j])
-    
+
     return dist_matrix
 
 
-def plot_tour_coordinates (coordinates, city_tour):
+def plot_tour_coordinates(coordinates, city_tour):
     xy = np.zeros((len(city_tour[0]), 2))
     for i in range(0, len(city_tour[0])):
         if (i < len(city_tour[0])):
-            xy[i, 0] = coordinates[city_tour[0][i]-1, 0]
-            xy[i, 1] = coordinates[city_tour[0][i]-1, 1]
+            xy[i, 0] = coordinates[city_tour[0][i] - 1, 0]
+            xy[i, 1] = coordinates[city_tour[0][i] - 1, 1]
         else:
-            xy[i, 0] = coordinates[city_tour[0][0]-1, 0]
-            xy[i, 1] = coordinates[city_tour[0][0]-1, 1]
-    
+            xy[i, 0] = coordinates[city_tour[0][0] - 1, 0]
+            xy[i, 1] = coordinates[city_tour[0][0] - 1, 1]
+
     # Vẽ đường đi
-    plt.plot(xy[:,0], xy[:,1], marker = 's', alpha = 1, markersize = 7, color = 'black')
+    plt.plot(xy[:, 0], xy[:, 1], marker='s', alpha=1, markersize=7, color='black')
     # Đánh dấu thành phố bắt đầu/kết thúc
-    plt.plot(xy[0,0], xy[0,1], marker = 's', alpha = 1, markersize = 7, color = 'red')
+    plt.plot(xy[0, 0], xy[0, 1], marker='s', alpha=1, markersize=7, color='red')
     # Đánh dấu thành phố thứ 2
-    plt.plot(xy[1,0], xy[1,1], marker = 's', alpha = 1, markersize = 7, color = 'orange')
+    plt.plot(xy[1, 0], xy[1, 1], marker='s', alpha=1, markersize=7, color='orange')
     return
 
 
@@ -164,11 +167,11 @@ def stochastic_2_opt(Xdata, city_tour):
     """
     best_route = copy.deepcopy(city_tour)
     # Chọn ngẫu nhiên 2 điểm cắt không trùng nhau
-    i, j = random.sample(range(0, len(city_tour[0])-1), 2)
+    i, j = random.sample(range(0, len(city_tour[0]) - 1), 2)
     if i > j:
         i, j = j, i
     # Đảo ngược đoạn từ i đến j
-    best_route[0][i:j+1] = list(reversed(best_route[0][i:j+1]))
+    best_route[0][i:j + 1] = list(reversed(best_route[0][i:j + 1]))
     # Cập nhật thành phố cuối cùng = thành phố đầu
     best_route[0][-1] = best_route[0][0]
     # Tính lại chi phí
@@ -204,7 +207,7 @@ def augumented_cost(Xdata, city_tour, penalty, limit):
         c2 = city_tour[0][i + 1]
         if c2 < c1:
             c1, c2 = c2, c1
-        augmented = augmented + Xdata[c1-1, c2-1] + (limit * penalty[c1-1][c2-1])
+        augmented = augmented + Xdata[c1 - 1, c2 - 1] + (limit * penalty[c1 - 1][c2 - 1])
     return augmented
 
 
@@ -236,25 +239,25 @@ def local_search(Xdata, city_tour, penalty, max_attempts=100, limit=1):
     ag_cost = augumented_cost(Xdata, city_tour=city_tour, penalty=penalty, limit=limit)
     # Sao chép hành trình hiện tại để tránh thay đổi trực tiếp
     solution = copy.deepcopy(city_tour)
-    
+
     # Lặp cho đến khi đạt max_attempts lần thử không cải thiện
     while count < max_attempts:
         improved = False  # Cờ đánh dấu có cải thiện trong vòng lặp này không
-        
+
         # Thử tìm kiếm 5 lần trong mỗi vòng lặp
         # (Tăng khả năng tìm được lời giải tốt hơn)
         for _ in range(5):
             # 1. Tạo nghiệm mới bằng cách đảo ngẫu nhiên một đoạn hành trình
             candidate = stochastic_2_opt(Xdata, city_tour=solution)
-            
+
             # 2. Tính chi phí mở rộng của nghiệm mới
             candidate_augmented = augumented_cost(
-                Xdata, 
-                city_tour=candidate, 
-                penalty=penalty, 
+                Xdata,
+                city_tour=candidate,
+                penalty=penalty,
                 limit=limit
             )
-            
+
             # 3. Nếu nghiệm mới tốt hơn (có chi phí thấp hơn)
             if candidate_augmented < ag_cost:
                 # Cập nhật nghiệm tốt nhất
@@ -266,17 +269,17 @@ def local_search(Xdata, city_tour, penalty, max_attempts=100, limit=1):
                 # Đánh dấu đã cải thiện
                 improved = True
                 # Thoát vòng lặp for để bắt đầu lại với nghiệm mới
-                break  
-        
-        # 4. Nếu không cải thiện sau 5 lần thử
+                break
+
+                # 4. Nếu không cải thiện sau 5 lần thử
         if not improved:
             count += 1  # Tăng bộ đếm không cải thiện
-    
+
     # Trả về nghiệm tốt nhất tìm được
     return solution
 
 
-def utility (Xdata, city_tour, penalty, limit = 1):
+def utility(Xdata, city_tour, penalty, limit=1):
     """
     Tính utility cho mỗi cạnh trong hành trình
     
@@ -294,7 +297,7 @@ def utility (Xdata, city_tour, penalty, limit = 1):
         c2 = city_tour[0][i + 1]
         if c2 < c1:
             c1, c2 = c2, c1
-        utilities[i] = Xdata[c1-1, c2-1] /(1 + penalty[c1-1][c2-1])
+        utilities[i] = Xdata[c1 - 1, c2 - 1] / (1 + penalty[c1 - 1][c2 - 1])
     return utilities
 
 
@@ -311,8 +314,9 @@ def update_penalty(penalty, city_tour, utilities):
         if c2 < c1:
             c1, c2 = c2, c1
         if (utilities[i] == max_utility):
-            penalty[c1-1][c2-1] = penalty[c1-1][c2-1] + 1
+            penalty[c1 - 1][c2 - 1] = penalty[c1 - 1][c2 - 1] + 1
     return penalty
+
 
 # Function: Guided Search
 def guided_search(Xdata, city_tour, alpha=0.1, local_search_optima=1000, max_attempts=50):
@@ -344,33 +348,33 @@ def guided_search(Xdata, city_tour, alpha=0.1, local_search_optima=1000, max_att
     best_cost = distance_calc(Xdata, best_solution)
     no_improvement_count = 0
     max_no_improvement = 20  # Số vòng không cải thiện tối đa trước khi dừng
-    
+
     for i in range(local_search_optima):
         # 1. Tìm kiếm cục bộ với hàm mục tiêu mở rộng
-        solution = local_search(Xdata, city_tour=best_solution, 
-                              penalty=penalty, 
-                              max_attempts=max_attempts, 
-                              limit=limit)
-        
+        solution = local_search(Xdata, city_tour=best_solution,
+                                penalty=penalty,
+                                max_attempts=max_attempts,
+                                limit=limit)
+
         # 2. Tính utility cho các cạnh
-        utilities = utility(Xdata, city_tour=solution, 
-                          penalty=penalty, limit=limit)
-        
+        utilities = utility(Xdata, city_tour=solution,
+                            penalty=penalty, limit=limit)
+
         # 3. Cập nhật ma trận phạt
         penalty = update_penalty(penalty, solution, utilities)
-        
+
         # 4. Đánh giá chi phí thực
         cost = distance_calc(Xdata, solution)
-        
+
         # 5. Cập nhật nghiệm tốt nhất
         if cost < best_cost:
             best_cost = cost
             best_solution = copy.deepcopy(solution)
             no_improvement_count = 0
-            print(f"  GLS loop {i+1}/{local_search_optima}, new best cost={best_cost}")
+            print(f"  GLS loop {i + 1}/{local_search_optima}, new best cost={best_cost}")
         else:
             no_improvement_count += 1
-        
+
         # 6. Kiểm tra điều kiện dừng sớm
         if no_improvement_count >= max_no_improvement and i >= max_attempts:
             print(f"  No improvement for {max_no_improvement} loops, stopping early")
@@ -403,20 +407,20 @@ def run_multiple_gls(Xdata, iterations=30, alpha=0.1, seed_func=nearest_neighbor
     """
     # Tìm tour khởi tạo tốt nhất
     best_seed = seed_func(Xdata)
-    
+
     costs = []
     times = []
     best_cost = float('inf')
     best_tour = None
-    
+
     for it in range(iterations):
         seed = copy.deepcopy(best_seed)
         start = time.time()
         solution, cost = guided_search(
-            Xdata, 
-            city_tour=seed, 
-            alpha=alpha, 
-            local_search_optima=1000, 
+            Xdata,
+            city_tour=seed,
+            alpha=alpha,
+            local_search_optima=1000,
             max_attempts=max_attempts
         )
         end = time.time()
@@ -425,7 +429,7 @@ def run_multiple_gls(Xdata, iterations=30, alpha=0.1, seed_func=nearest_neighbor
         if cost < best_cost:
             best_cost = cost
             best_tour = solution
-        print(f"  Iteration {it+1}/{iterations} done, cost={cost}, time={end-start:.2f}s")
+        print(f"  Iteration {it + 1}/{iterations} done, cost={cost}, time={end - start:.2f}s")
     avg_cost = np.mean(costs)
     avg_time = np.mean(times)
     return best_cost, avg_cost, avg_time, best_tour
@@ -437,18 +441,18 @@ def main():
     bks_values = [426, 538, 21282, 6528, 29368, 49135, 42029, 15281, 107217, 6773]
     alpha = 0.1
     results = []
-    
+
     print("Đang tải dữ liệu...")
     datasets = preprocess_data(file_path)
-    
+
     for idx, coords in enumerate(datasets):
         print(f"\n=== Xử lý Dataset {idx + 1} ===")
         Xdata = build_distance_matrix(coords)
         print(f"  Đang chạy GLS cho dataset {idx + 1}...")
         best_cost, avg_cost, avg_time, best_tour = run_multiple_gls(
-            Xdata, 
+            Xdata,
             iterations=30,
-            alpha=alpha, 
+            alpha=alpha,
             seed_func=nearest_neighbor_seed,
             max_attempts=100
         )
@@ -457,10 +461,10 @@ def main():
         print(f"  Average time: {avg_time:.4f} s")
         plt.figure(figsize=(10, 8))
         plot_tour_coordinates(coords, best_tour)
-        plt.title(f"Dataset {idx+1} - Best Tour (Cost: {best_cost:.2f})")
-        plt.savefig(f"dataset_{idx+1}_tour.png")
+        plt.title(f"Dataset {idx + 1} - Best Tour (Cost: {best_cost:.2f})")
+        plt.savefig(f"dataset_{idx + 1}_tour.png")
         plt.close()
-       
+
         results.append({
             'dataset': idx + 1,
             'alpha': alpha,
@@ -469,27 +473,27 @@ def main():
             'avg_time': round(avg_time, 2),
             'BKS': bks_values[idx]
         })
-    
+
     for result in results:
         bks = result['BKS']
         best_cost = result['best_cost']
         avg_cost = result['avg_cost']
         result['Error (%)'] = round((avg_cost - bks) / bks * 100, 2)
         result['PE (%)'] = round((avg_cost - best_cost) / best_cost * 100, 2)
-    
+
     df = pd.DataFrame(results)
-    df = df[['dataset', 'alpha', 'best_cost', 'avg_cost', 'avg_time', 
+    df = df[['dataset', 'alpha', 'best_cost', 'avg_cost', 'avg_time',
              'BKS', 'Error (%)', 'PE (%)']]
-    
+
     print("\n=== Kết quả thực nghiệm GLS ===")
     for dataset in sorted(df['dataset'].unique()):
         print(f"\n=== Dataset {dataset} ===")
         print(df[df['dataset'] == dataset].to_string(index=False))
-   
+
     output_file = "GLS_results.csv"
     df.to_csv(output_file, index=False)
     print(f"\nĐã lưu kết quả vào file: {output_file}")
 
+
 if __name__ == "__main__":
     main()
-
