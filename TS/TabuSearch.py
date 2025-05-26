@@ -69,7 +69,6 @@ def tnm_selection(n, adj_mat, sol, max_tnm, mut_md, tb_size, tb_list, fq_dict, b
         new_sol = get_new_sol(sol, best_i_0, best_j_0)  # Tạo lời giải mới từ việc hoán đổi cặp tốt nhất chưa bị cấm
         new_cost = cost + best_delta_0  # Tính chi phí mới
 
-    # Trả về lời giải mới, chi phí mới, danh sách Tabu và từ điển tần suất
     return new_sol, new_cost, tb_list, fq_dict
 
 
